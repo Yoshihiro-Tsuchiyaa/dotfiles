@@ -1,0 +1,9 @@
+ls=lsd $*
+l=lsd $*
+ll=lsd -l $*
+la=lsd -a $*
+lla=lsd -la $*
+lt=lsd --tree $*
+cdh=cd %USERPROFILE%
+cdb=cd %USERPROFILE%\.local\bin
+cdc=cd %USERPROFILE%\.local\share\chezmoi

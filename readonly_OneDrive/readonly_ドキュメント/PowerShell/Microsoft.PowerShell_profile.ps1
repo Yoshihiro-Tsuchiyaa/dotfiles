@@ -31,8 +31,8 @@ if (-not $theme) {
 $env:WT_THEME = $theme
 $env:VIM_COLORSCHEME = Get-VimColorScheme $theme
 
-Write-Host "WT_THEME=$theme"
-Write-Host "VIM_COLORSCHEME=$env:VIM_COLORSCHEME"
+# Write-Host "WT_THEME=$theme"
+# Write-Host "VIM_COLORSCHEME=$env:VIM_COLORSCHEME"
 
 # Set-Alias -Name cdh -Value cd %USERPROFILE%
 # Set-Alias -Name cdb -Value cd %USERPROFILE%\.local\bin

@@ -1,13 +1,14 @@
 @echo off
+setlocal
+rem --- Windows Terminal の cmd のときだけ実行 ---
+if "%WT_PROFILE_ID%"=="" goto :skip
 
 rem --- pwsh が存在するかチェック ---
-if exist "%ProgramFiles%\PowerShell\7\pwsh.exe" (
-    set WT_SHELL=pwsh.exe
-) else (
-    set WT_SHELL=powershell.exe
-)
-
-setlocal
+rem if exist "%ProgramFiles%\PowerShell\7\pwsh.exe" (
+rem     set WT_SHELL=pwsh.exe
+rem ) else (
+rem     set WT_SHELL=powershell.exe
+rem )
 
 set SETTINGS=%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
 
@@ -35,20 +36,18 @@ if "%WT_THEME%"=="Tokyo Night Light"   set VIM_COLORSCHEME=tokyonight
 rem --- 汎用ルール（その他のテーマ） ---
 if "%VIM_COLORSCHEME%"=="" (
     set VIM_COLORSCHEME=%WT_THEME: =-%
-    set VIM_COLORSCHEME=%WT_THEME: =-%
     set VIM_COLORSCHEME=%VIM_COLORSCHEME:"=%
     set VIM_COLORSCHEME=%VIM_COLORSCHEME:~0,-0%
     set VIM_COLORSCHEME=%VIM_COLORSCHEME:~0,-0%
     set VIM_COLORSCHEME=%VIM_COLORSCHEME:~0,-0%
 )
 
-echo WT_THEME=%WT_THEME%
-echo VIM_COLORSCHEME=%VIM_COLORSCHEME%
+rem echo "WT_PROFILE_ID=%WT_PROFILE_ID%"
+rem echo WT_THEME=%WT_THEME%
+rem echo VIM_COLORSCHEME=%VIM_COLORSCHEME%
 
 rem --- doskey マクロを読み込む ---
 doskey /macrofile=%USERPROFILE%\macros.txt
 
 endlocal & set WT_THEME=%WT_THEME% & set VIM_COLORSCHEME=%VIM_COLORSCHEME%
-
-
-
+:skip

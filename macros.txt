@@ -1,9 +1,13 @@
-ls=lsd $*
-l=lsd $*
-ll=lsd -l $*
-la=lsd -a $*
+ls=lsd --group-directories-first $*
+la=ls --almost-all $*
+ll=ls --long $*
+lt=ls --tree --depth=2 $*
+l=ll --almost-all $*
+llm=ll --timesort $*
+llt=ll --tree --depth=2 $*
+llat=l --tree --depth=2 $*
+lm=l --timesort $*
 lla=lsd -la $*
-lt=lsd --tree $*
 cdh=cd %USERPROFILE%
 cdb=cd %USERPROFILE%\.local\bin
 cdc=cd %USERPROFILE%\.local\share\chezmoi

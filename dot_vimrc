@@ -4,11 +4,6 @@
 let g:_vim_lsp=1
 let g:_vim_fzf=1
 let g:_omni_=0
-let g:_colorscheme_iceberg=0
-let g:_colorscheme_tokyonight=0
-"if !_colorscheme_iceberg
-"    let g:_colorscheme_tokyonight=1
-"endif
 "----------------------------------------
 "
 syntax enable
@@ -171,7 +166,12 @@ match DoubleByteSpace /　/
 "----------------------------------------
 call plug#begin()
 Plug 'catppuccin/nvim', { 'as': 'captppuccin' }
+if $VIM_COLORSCHEME == "tokyonight"
 Plug 'ghifarit53/tokyonight-vim'
+endif
+if $VIM_COLORSCHEME == "dracula"
+    Plug 'dracula/vim', { 'as' : 'dracula' }
+endif
 if _vim_lsp
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
@@ -231,6 +231,9 @@ if executable('clangd')
 endif
 
 endif " _vim_lsp
+"
+" colorscheme
+"
 if has('gui_running')
     set columns=120
     set lines=60
@@ -245,21 +248,6 @@ endif
 "colorscheme tender
 
 set background=dark
-let wt = $WT_THEME
-if wt == "Dracula"
-    colorscheme Dracula
-elseif wt == "Iceberg"
-    colorscheme iceberg
-elseif wt == "Tokyo Night"
-    colorscheme tokyonight
-elseif wt == "Tokyo Night Storm"
-    colorscheme tokyonight
-elseif wt == "Tokyo Night Light"
-    colorscheme tokyonight
+if $VIM_COLORSCHEME != ""
+    execute "colorscheme " . $VIM_COLORSCHEME
 endif
-"if _colorscheme_iceberg
-"    colorscheme iceberg
-"endif
-"if _colorscheme_tokyonight
-"    colorscheme tokyonight
-"endif

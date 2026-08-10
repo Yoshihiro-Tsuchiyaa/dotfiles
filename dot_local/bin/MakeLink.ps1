@@ -74,6 +74,7 @@ foreach ($exe in $exeFiles) {
     if ($needUpdate) {
 
         if (Test-Path $destPath) {
+Write-Host "Test-Path $destPath:True"
             # 元の shortName のバージョン情報を使う
             $ver = (Get-Item $destPath).VersionInfo.ProductVersion
             if (-not $ver) { $ver = "unknown" }
@@ -81,6 +82,11 @@ foreach ($exe in $exeFiles) {
             $backupName = "$($shortName)_$ver.exe.old"
 
             Rename-Item -Path $destPath -NewName $backupName -Force
+Write-Host "destPath=$destPath"
+Write-Host "backupName=$backupName"
+            # 古い shortName のハードリンクを削除（unlink）
+            Remove-Item $destPath -Force
+
             Write-Host "[RENAME] $shortName → $backupName"
         }
 

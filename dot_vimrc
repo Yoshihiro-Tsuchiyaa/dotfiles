@@ -108,18 +108,16 @@ set whichwrap=b,s,h,l,<,>,[,],~
 set mouse=a
 set mouse=
 "
-set nohlsearch
+    set nohlsearch
 set nomodeline
 set encoding=UTF-8
 "----------------------------------------
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
 "----------------------------------------
-au BufNewFile,BufRead *.js, *.html, *.css
-    \ tabstop=2
-    \ softtabstop=2
-    \ shiftwidth=2
-
+au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
+au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
+au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 "----------------------------------------
 " auto reload .vimrc
 augroup source-vimrc
@@ -141,7 +139,7 @@ augroup END
 " HTML/XML閉じタグ自動補完
 augroup MyXML
   autocmd!
-  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype xml  inoremap <buffer> </ </<C-x><C-o>
   autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
 augroup END
 
@@ -228,6 +226,17 @@ if executable('clangd')
         autocmd FileType objcpp setlocal omnifunc=lsp#complete
         endif " _omni_
     augroup end
+endif
+"
+" typescript
+"
+if executable('typescript-language-server')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'typescript-language-server',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+        \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'tsconfig.json'))},
+        \ 'whitelist': ['typescript', 'typescriptreact'],
+        \ })
 endif
 
 endif " _vim_lsp

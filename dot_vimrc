@@ -1,9 +1,10 @@
 "----------------------------------------
 " Vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=0:
 "
-let g:_vim_lsp=1
-let g:_vim_fzf=1
-let g:_omni_=0
+let s:_vim_lsp=1
+let s:_vim_fzf=1
+let s:_vim_omni=1
+let s:_vim_lightline=1
 "----------------------------------------
 "
 syntax enable
@@ -108,9 +109,11 @@ set whichwrap=b,s,h,l,<,>,[,],~
 set mouse=a
 set mouse=
 "
-    set nohlsearch
+set nohlsearch
 set nomodeline
+set noshowmode
 set encoding=UTF-8
+set completeopt=menu,menuone,noselect
 "----------------------------------------
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
@@ -162,35 +165,49 @@ match DoubleByteSpace /　/
 "----------------------------------------
 
 "----------------------------------------
-call plug#begin()
-Plug 'catppuccin/nvim', { 'as': 'captppuccin' }
-if $VIM_COLORSCHEME == "tokyonight"
-Plug 'ghifarit53/tokyonight-vim'
+if $WT_THEME == "Dracula"
+    let s:_vim_colorscheme = "dracula"
+elseif $WT_THEME == "Iceberg"
+    let s:_vim_colorscheme = "iceberg"
+elseif $WT_THEME == "Tokyo Night" || $WT_THEME == "Tokyo Night Storm" || $WT_THEME == "Tokyo Night Light"
+    let s:_vim_colorscheme = "tokyonight"
+else
+    let s:_vim_colorscheme = "iceberg"
 endif
-if $VIM_COLORSCHEME == "dracula"
+
+"----------------------------------------
+call plug#begin()
+    Plug 'catppuccin/nvim', { 'as': 'captppuccin' }
+if s:_vim_colorscheme == "tokyonight"
+    Plug 'ghifarit53/tokyonight-vim'
+elseif s:_vim_colorscheme == "dracula"
     Plug 'dracula/vim', { 'as' : 'dracula' }
 endif
-if _vim_lsp
+if s:_vim_lightline
+    Plug 'itchyny/lightline.vim'
+endif " s:_vim_lightline
+
+if s:_vim_lsp
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
-endif " _vim_lsp
+endif " s:_vim_lsp
 "
 " fzf
 "
-if _vim_fzf
+if s:_vim_fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-endif " _vim_fzf
+endif " s:_vim_fzf
 
 call plug#end()
 "----------------------------------------
 "
 " python-language-server
 "
-if _vim_lsp
+if s:_vim_lsp
 if executable('pyls')
     au User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
@@ -219,12 +236,12 @@ if executable('clangd')
                     \ 'cmd': {server_info->['clangd']},
                     \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
                     \ })
-        if _omni_
-        autocmd FileType c setlocal omnifunc=lsp#complete
-        autocmd FileType cpp setlocal omnifunc=lsp#complete
-        autocmd FileType objc setlocal omnifunc=lsp#complete
+        if s:_vim_omni
+        autocmd FileType c      setlocal omnifunc=lsp#complete
+        autocmd FileType cpp    setlocal omnifunc=lsp#complete
+        autocmd FileType objc   setlocal omnifunc=lsp#complete
         autocmd FileType objcpp setlocal omnifunc=lsp#complete
-        endif " _omni_
+        endif " s:_vim_omni
     augroup end
 endif
 "
@@ -239,14 +256,14 @@ if executable('typescript-language-server')
         \ })
 endif
 
-endif " _vim_lsp
+endif " s:_vim_lsp
 "
 " colorscheme
 "
 if has('gui_running')
     set columns=120
     set lines=60
-    set guifont=PlemolJP_Console_NF:h12
+    set guifont=PlemolJP_Console_NF:h14
 else
     set termguicolors
 endif
@@ -257,6 +274,14 @@ endif
 "colorscheme tender
 
 set background=dark
-if $VIM_COLORSCHEME != ""
-    execute "colorscheme " . $VIM_COLORSCHEME
+if s:_vim_colorscheme != ""
+    if s:_vim_colorscheme == "tokyonight"
+        let g:tokyonight_style = 'night'   " available: night, storm
+        let g:tokyonight_enable_italic = 1 " available: 0, 1
+        if s:_vim_lightline
+            let g:lightline = { 'colorscheme' : 'tokyonight' }
+        endif " s:_vim_lightline
+    endif
+    execute "colorscheme " . s:_vim_colorscheme
 endif
+

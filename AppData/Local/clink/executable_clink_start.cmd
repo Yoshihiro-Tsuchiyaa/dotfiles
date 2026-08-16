@@ -22,26 +22,15 @@ if "%WT_THEME%"=="" (
     )
 )
 
-if "%WT_THEME%"=="Dracula"             set VIM_COLORSCHEME=dracula
-if "%WT_THEME%"=="Iceberg"             set VIM_COLORSCHEME=iceberg
-if "%WT_THEME%"=="Tokyo Night"         set VIM_COLORSCHEME=tokyonight
-if "%WT_THEME%"=="Tokyo Night Storm"   set VIM_COLORSCHEME=tokyonight
-if "%WT_THEME%"=="Tokyo Night Light"   set VIM_COLORSCHEME=tokyonight
-
-if "%VIM_COLORSCHEME%"=="" (
-    set VIM_COLORSCHEME=%WT_THEME: =-%
-    set VIM_COLORSCHEME=%WT_THEME: =-%
-    set VIM_COLORSCHEME=%VIM_COLORSCHEME:"=%
-    set VIM_COLORSCHEME=%VIM_COLORSCHEME:~0,-0%
-    set VIM_COLORSCHEME=%VIM_COLORSCHEME:~0,-0%
-    set VIM_COLORSCHEME=%VIM_COLORSCHEME:~0,-0%
-)
-
 rem echo "WT_PROFILE_ID=%WT_PROFILE_ID%"
 rem echo WT_THEME=%WT_THEME%
-rem echo VIM_COLORSCHEME=%VIM_COLORSCHEME%
 
 doskey /macrofile=%USERPROFILE%\macros.txt
 
-endlocal & set WT_THEME=%WT_THEME% & set VIM_COLORSCHEME=%VIM_COLORSCHEME%
+rem
+rem
+rem
+set PROFILE=%USERPROFILE%\OneDrive\9831~1\PowerShell\Microsoft.PowerShell_profile.ps1
+
+endlocal & set WT_THEME=%WT_THEME% & set PROFILE=%PROFILE%
 :skip

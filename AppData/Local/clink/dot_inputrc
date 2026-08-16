@@ -1,0 +1,23 @@
+# Default key bindings for fzf with Clink.
+"\C-t":        "luafunc:fzf_file"               # Ctrl-T lists files recursively; choose one or multiple to insert them.
+"\C-r":        "luafunc:fzf_history"            # Ctrl-R lists history entries; choose one to insert it.
+"\M-c":        "luafunc:fzf_directory"          # Alt-C lists subdirectories; choose one to 'cd /d' to it.
+"\M-b":        "luafunc:fzf_bindings"           # Alt-B lists key bindings; choose one to invoke it.
+"\t":          "luafunc:fzf_complete"           # Tab uses fzf to filter match completions, but only when preceded by '**' (recursive).
+"\e[27;5;32~": "luafunc:fzf_complete_force"     # Ctrl-Space uses fzf to filter match completions (and supports '**' for recursive).
+
+# Default key bindings for fzf_git with Clink.
+"\C-g?":       "luafunc:fzf_git_help"           # Ctrl-G,? shows key bindings for fzf_git.
+"\C-g\C-f":    "luafunc:fzf_git_files"          # Ctrl-G,Ctrl-F uses fzf for Files.
+"\C-g\C-b":    "luafunc:fzf_git_branches"       # Ctrl-G,Ctrl-B uses fzf for Branches.
+"\C-g\C-t":    "luafunc:fzf_git_tags"           # Ctrl-G,Ctrl-T uses fzf for Tags.
+"\C-g\C-r":    "luafunc:fzf_git_remotes"        # Ctrl-G,Ctrl-R uses fzf for Remotes.
+"\C-g\C-h":    "luafunc:fzf_git_commit_hashes"  # Ctrl-G,Ctrl-H uses fzf for commit Hashes.
+"\C-g\C-s":    "luafunc:fzf_git_stashes"        # Ctrl-G,Ctrl-S uses fzf for Stashes.
+"\C-g\C-l":    "luafunc:fzf_git_reflogs"        # Ctrl-G,Ctrl-L uses fzf for reflogs.
+"\C-g\C-w":    "luafunc:fzf_git_worktrees"      # Ctrl-G,Ctrl-W uses fzf for Worktrees.
+"\C-g\C-e":    "luafunc:fzf_git_eachref"        # Ctrl-G,Ctrl-E uses fzf for Eachref (git for-each-ref).
+
+# Default key bindings for fzf_ripgrep with Clink.
+"\C-xf":       "luafunc:fzf_ripgrep"            # Ctrl-X,F shows a FZF filtered view with files matching search term.
+"\C-x\C-f":    "luafunc:fzf_ripgrep"            # Ctrl-X,Ctrl-F shows a FZF filtered view with files matching search term.

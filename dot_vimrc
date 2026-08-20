@@ -1,5 +1,5 @@
 "----------------------------------------
-" Vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=0:
+" Vim: set noexpandtab tabstop=4 shiftwidth=4 softtabstop=0:
 "
 let s:_vim_lsp=1
 let s:_vim_fzf=1
@@ -110,17 +110,27 @@ set mouse=a
 set mouse=
 "
 set nohlsearch
-set nomodeline
+set modeline
+set modelines=5
 set noshowmode
 set encoding=UTF-8
+set fileencodings=ucs-bom,utf-8,euc-jp,cp932,default,latin1
 set completeopt=menu,menuone,noselect
 "----------------------------------------
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
 "----------------------------------------
+" cmd / bat / vbs は Shift-JIS + CRLF で扱う
+augroup FileEncCmdBatVbs
+  autocmd!
+  autocmd BufRead,BufNewFile *.cmd,*.bat,*.vbs setlocal fileencoding=cp932 fileformat=dos
+  autocmd BufWritePre *.cmd,*.bat,*.vbs setlocal fileencoding=cp932 fileformat=dos
+augroup END
+
 au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
+
 "----------------------------------------
 " auto reload .vimrc
 augroup source-vimrc
@@ -165,12 +175,18 @@ match DoubleByteSpace /　/
 "----------------------------------------
 
 "----------------------------------------
-if $WT_THEME == "Dracula"
+let s:wt_theme = trim($WT_THEME)
+
+if s:wt_theme == "Dracula"
     let s:_vim_colorscheme = "dracula"
-elseif $WT_THEME == "Iceberg"
+elseif s:wt_theme == "Iceberg"
     let s:_vim_colorscheme = "iceberg"
-elseif $WT_THEME == "Tokyo Night" || $WT_THEME == "Tokyo Night Storm" || $WT_THEME == "Tokyo Night Light"
+elseif s:wt_theme == "Tokyo Night"
     let s:_vim_colorscheme = "tokyonight"
+elseif s:wt_theme == "Tokyo Night Storm"
+    let s:_vim_colorscheme = "tokyonight-storm"
+elseif s:wt_theme == "Tokyo Night Light"
+    let s:_vim_colorscheme = "tokyonight-light"
 else
     let s:_vim_colorscheme = "iceberg"
 endif

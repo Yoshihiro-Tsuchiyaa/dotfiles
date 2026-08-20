@@ -25,7 +25,7 @@ if "%WT_THEME%"=="" (
 rem echo "WT_PROFILE_ID=%WT_PROFILE_ID%"
 rem echo WT_THEME=%WT_THEME%
 
-doskey /macrofile=%USERPROFILE%\macros.txt
+doskey /macrofile=%USERPROFILE%\macros.doskey
 
 rem
 rem

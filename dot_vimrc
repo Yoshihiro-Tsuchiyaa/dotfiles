@@ -120,14 +120,18 @@ set completeopt=menu,menuone,noselect
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
 "----------------------------------------
-" cmd / bat / vbs は Shift-JIS + CRLF で扱う
-augroup FileEncCmdBatVbs
+" cmd / bat / vbs / doskey は Shift-JIS + CRLF で扱う
+" ps1 はUTF-8 ＋CRLF
+augroup MyLocalSetting
   autocmd!
-  autocmd BufRead,BufNewFile *.cmd,*.bat,*.vbs setlocal fileencoding=cp932 fileformat=dos
-  autocmd BufWritePre *.cmd,*.bat,*.vbs setlocal fileencoding=cp932 fileformat=dos
+  autocmd BufRead,BufNewFile *.cmd,*.bat,*.vbs setlocal fenc=cp932 ff=dos
+  autocmd BufRead,BufNewFile *.ps1             setlocal fenc=utf-8 ff=dos
+  autocmd BufWritePre *.cmd,*.bat,*.vbs        setlocal fenc=cp932 ff=dos
+  autocmd BufWritePre *.ps1                    setlocal fenc=utf-8 ff=dos
+  autocmd BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
+  autocmd FileType make setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 augroup END
 
-au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 au BufNewFile,BufRead *.js, *.html, *.css setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=0
 
@@ -138,10 +142,6 @@ augroup source-vimrc
   autocmd BufWritePost *vimrc source $MYVIMRC | set foldmethod=marker
   autocmd BufWritePost *gvimrc if has('gui_running') source $MYGVIMRC
 augroup END
-
-" Makefile専用設定
-autocmd FileType make setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
-
 " auto comment off
 augroup auto_comment_off
   autocmd!
@@ -204,11 +204,11 @@ if s:_vim_lightline
 endif " s:_vim_lightline
 
 if s:_vim_lsp
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
 endif " s:_vim_lsp
 "
 " fzf
@@ -219,18 +219,21 @@ Plug 'junegunn/fzf.vim'
 endif " s:_vim_fzf
 
 call plug#end()
+
 "----------------------------------------
+if s:_vim_lsp
 "
 " python-language-server
 "
-if s:_vim_lsp
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
+    let g:lsp_settings_filetype_python = [ 'pyright-langserver' ]
+
+"@if executable('pyls')
+"@    au User lsp_setup call lsp#register_server({
+"@        \ 'name': 'pyls',
+"@        \ 'cmd': {server_info->['pyls']},
+"@        \ 'whitelist': ['python'],
+"@        \ })
+"@endif " 0
 "
 " bash-language-server
 "
@@ -280,6 +283,8 @@ if has('gui_running')
     set columns=120
     set lines=60
     set guifont=PlemolJP_Console_NF:h14
+"    set guifont=Fira_Code:h14
+"    set guifont=Moralerspace_Neon_HW:h14
 else
     set termguicolors
 endif

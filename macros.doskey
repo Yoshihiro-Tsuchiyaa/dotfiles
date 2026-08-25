@@ -1,3 +1,4 @@
+;=
   ls=lsd --group-directories-first $*
   la=lsd --group-directories-first --almost-all $*
   ll=lsd --group-directories-first --long $*
@@ -8,6 +9,11 @@
 llat=lsd --group-directories-first --long --almost-all --tree --depth=2 $*
   lm=lsd --group-directories-first --long --almost-all --timesort $*
  lla=lsd --long --almost-all $*
+;=
 cdh=cd %USERPROFILE%
 cdb=cd %USERPROFILE%\.local\bin
 cdc=cd %USERPROFILE%\.local\share\chezmoi
+;=
+a=wt nt -p "コマンド プロンプト (管理者)"
+admin=wt nt -p "PowerShell （管理者)"
+;=

@@ -25,3 +25,11 @@ $env:WT_THEME = $theme
 function cdh { Set-Location $env:USERPROFILE }
 function cdb { Set-Location "$env:USERPROFILE\.local\bin" }
 function cdc { Set-Location "$env:USERPROFILE\.local\share\chezmoi" }
+function admin { wt -p "PowerShell (管理者)" }
+#
+# python:venv
+#
+$venv = Join-Path $env:USERPROFILE "venv\Scripts\Activate.ps1"
+. $venv
+
+$env:CLINK = "$env:LOCALAPPDATA\clink\clink_start.cmd"

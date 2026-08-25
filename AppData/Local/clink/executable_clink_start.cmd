@@ -2,11 +2,11 @@
 if "%WT_PROFILE_ID%"=="" goto :skip
 setlocal
 
-rem if exist "%ProgramFiles%\PowerShell\7\pwsh.exe" (
-rem     set WT_SHELL=pwsh.exe
-rem ) else (
-rem     set WT_SHELL=powershell.exe
-rem )
+if exist "%ProgramFiles%\PowerShell\7\pwsh.exe" (
+    set WT_SHELL=pwsh.exe
+) else (
+    set WT_SHELL=powershell.exe
+)
 
 set SETTINGS=%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
 
@@ -25,12 +25,19 @@ if "%WT_THEME%"=="" (
 rem echo "WT_PROFILE_ID=%WT_PROFILE_ID%"
 rem echo WT_THEME=%WT_THEME%
 
+endlocal & set WT_THEME=%WT_THEME% & set WT_SHELL=%WT_SHELL%
+:skip
+
 doskey /macrofile=%USERPROFILE%\macros.doskey
 
 rem
 rem
 rem
 set PROFILE=%USERPROFILE%\OneDrive\9831~1\PowerShell\Microsoft.PowerShell_profile.ps1
+set CLINK=%LOCALAPPDATA%\clink\clink_start.cmd
 
-endlocal & set WT_THEME=%WT_THEME% & set PROFILE=%PROFILE%
-:skip
+rem
+rem python venv
+rem
+call "%USERPROFILE%\venv\Scripts\activate.bat"
+

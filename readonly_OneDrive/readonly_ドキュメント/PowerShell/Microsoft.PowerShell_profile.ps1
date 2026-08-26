@@ -1,7 +1,16 @@
-﻿#
+﻿if ($env:PROFILE_LOADED -ne "1") {
+    # フラグを永続化
+    setx PROFILE_LOADED 1
+    # ---- 初回だけ実行したい処理 ----
+    Write-Host "PROFILE 初回実行"
+
+#
 # ~/.config/powershell/Microsoft.PowerShell_profile.ps1 など
 #
-oh-my-posh init pwsh | Invoke-Expression
+#@oh-my-posh init pwsh | Invoke-Expression
+#
+#
+#
 Import-Module lsd-aliases -DisableNameChecking
 #
 # WT_THEME
@@ -30,6 +39,21 @@ function admin { wt -p "PowerShell (管理者)" }
 # python:venv
 #
 $venv = Join-Path $env:USERPROFILE "venv\Scripts\Activate.ps1"
-. $venv
-
-$env:CLINK = "$env:LOCALAPPDATA\clink\clink_start.cmd"
+if (Test-Path $venv) {
+    Write-Host "venv setup file found: $venv"
+    . $venv
+} else {
+    Write-Host "venv setup file not found: $venv"
+}
+#
+# clink setup file for editing
+#
+$clink = Join-Path $env:LOCALAPPDATA "clink\clink_start.cmd"
+if (Test-Path $clink) {
+    Write-Host "clink setup file found: $clink"
+    $env:CLINK = $clink
+} else {
+    Write-Host "clink setup file not found: $clink"
+}
+#--------------------------------------------------
+}

@@ -1,10 +1,4 @@
-﻿if ($env:PROFILE_LOADED -ne "1") {
-    # フラグを永続化
-    setx PROFILE_LOADED 1
-    # ---- 初回だけ実行したい処理 ----
-    Write-Host "PROFILE 初回実行"
-
-#
+﻿#
 # ~/.config/powershell/Microsoft.PowerShell_profile.ps1 など
 #
 #@oh-my-posh init pwsh | Invoke-Expression
@@ -55,5 +49,4 @@ if (Test-Path $clink) {
 } else {
     Write-Host "clink setup file not found: $clink"
 }
-#--------------------------------------------------
-}
+

@@ -96,7 +96,7 @@ Write-Host "backupName=$backupName"
 
     } else {
 
-        Write-Host "[SKIP] $shortName (正常リンク)"
+#        Write-Host "[SKIP] $shortName (正常リンク)"
     }
 }
 

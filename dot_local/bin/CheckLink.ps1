@@ -6,9 +6,9 @@ $wingetRoot = Join-Path $env:LOCALAPPDATA "Microsoft\WinGet\Packages"
 # NameMap 読み込み
 . "$PSScriptRoot\NameMap.ps1"
 
-Write-Host "=== CheckLink.ps1 ==="
+# Write-Host "=== CheckLink.ps1 ==="
 
-$countHARDLINK_WINGET = 0
+$countHardlink_WinGet = 0
 
 foreach ($file in Get-ChildItem $destRoot -Filter *.exe) {
 
@@ -34,8 +34,8 @@ foreach ($file in Get-ChildItem $destRoot -Filter *.exe) {
     # 2. ハードリンクの名前リストに Winget Packages が含まれているか
     #
     if ($rawLinks -match "\\Microsoft\\WinGet\\Packages\\") {
-        Write-Host "[HARDLINK/WINGET] $shortName"
-        $countHARDLINK_WINGET++
+        Write-Host "[Hardlink/WinGet] $shortName"
+        $countHardlink_WinGet++
         continue
     }
 
@@ -53,4 +53,4 @@ foreach ($file in Get-ChildItem $destRoot -Filter *.exe) {
 
 }
 
-Write-Host "countHARDLINK_WINGET = $countHARDLINK_WINGET"
+Write-Host "countHardlink_WinGet = $countHardlink_WinGet"

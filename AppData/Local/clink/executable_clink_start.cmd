@@ -20,18 +20,6 @@ if "%WT_THEME%"=="" (
     )
 )
 
-rem for /f "tokens=*" %%A in ('pwsh -NoLogo -NoProfile -Command ^
-rem   "(Get-Content $env:SETTINGS -Raw | ConvertFrom-Json).profiles.list | Where-Object { $_.guid -eq $env:WT_PROFILE_ID } | Select-Object -ExpandProperty colorScheme"') do (
-rem     set WT_THEME=%%A
-rem )
-rem 
-rem if "%WT_THEME%"=="" (
-rem     for /f "tokens=*" %%A in ('pwsh -NoLogo -NoProfile -Command ^
-rem       "(Get-Content $env:SETTINGS -Raw | ConvertFrom-Json).profiles.defaults.colorScheme"') do (
-rem         set WT_THEME=%%A
-rem     )
-rem )
-
 rem echo "WT_PROFILE_ID=%WT_PROFILE_ID%"
 rem echo WT_THEME=%WT_THEME%
 
@@ -39,7 +27,7 @@ set "aliases=%USERPROFILE%\macros.doskey"
 if exist "%aliases%" (
     doskey /macrofile="%aliases%"
 ) else (
-    echo "doskey macrofile not found: %aliases%"
+    echo doskey macrofile not found: %aliases%
 )
 rem
 rem
@@ -47,18 +35,22 @@ rem
 set "PROFILE=%USERPROFILE%\OneDrive\9831~1\PowerShell\Microsoft.PowerShell_profile.ps1"
 set "CLINK=%LOCALAPPDATA%\clink\clink_start.cmd"
 
+endlocal & set WT_THEME=%WT_THEME% & set WT_SHELL=%WT_SHELL% & set PROFILE=%PROFILE% & set CLINK=%CLINK%
+:skip
+
+pwsh -NoProfile -Command ^
+  "if (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) { exit 1 } else { exit 0 }"
+set "isAdmin=%ERRORLEVEL%"
+echo Result: isAdmin=%isAdmin%
+
 rem
 rem python venv
 rem
 set "venv=%USERPROFILE%\venv\Scripts\activate.bat"
 if exist "%venv%" (
-    call "%venv%"
-    echo "venv: %venv%"
-    where python
+rem    call "%venv%"
+    echo venv: %venv%
+    where.exe python
 ) else (
-    echo "venv setup file not found: %venv%"
+    echo venv setup file not found: %venv%
 )
-
-endlocal & set WT_THEME=%WT_THEME% & set WT_SHELL=%WT_SHELL% & set PROFILE=%PROFILE% & set CLINK=%CLINK%
-:skip
-

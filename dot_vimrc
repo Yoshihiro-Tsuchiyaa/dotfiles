@@ -1,5 +1,5 @@
 "----------------------------------------
-" Vim: set noexpandtab tabstop=4 shiftwidth=4 softtabstop=0:
+" Vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=0:
 "
 let s:_vim_lsp=1
 let s:_vim_fzf=1
@@ -118,6 +118,7 @@ set fileencodings=ucs-bom,utf-8,euc-jp,cp932,default,latin1
 set completeopt=menu,menuone,noselect
 "----------------------------------------
 autocmd FileType python setlocal tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+autocmd FileType lua setlocal tabstop=3 softtabstop=3 shiftwidth=3 textwidth=79 expandtab autoindent fileformat=unix
 
 "----------------------------------------
 " cmd / bat / vbs / doskey は Shift-JIS + CRLF で扱う
@@ -191,8 +192,26 @@ else
     let s:_vim_colorscheme = "iceberg"
 endif
 
+" ----------------------------------------------------
+"  2. LSP & 補完用の基本キーマッピング（任意で変更してください）
+" ----------------------------------------------------
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    " gd で定義ジャンプ
+    nmap <buffer> gd <plug>(lsp-definition)
+    " K でホバー（ドキュメント表示）
+    nmap <buffer> K <plug>(lsp-hover)
+    " <F2> でリネーム
+    nmap <buffer> <F2> <plug>(lsp-rename)
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 "----------------------------------------
 call plug#begin()
+    Plug 'pprovost/vim-ps1'
     Plug 'catppuccin/nvim', { 'as': 'captppuccin' }
 if s:_vim_colorscheme == "tokyonight"
     Plug 'ghifarit53/tokyonight-vim'
@@ -274,12 +293,20 @@ if executable('typescript-language-server')
         \ 'whitelist': ['typescript', 'typescriptreact'],
         \ })
 endif
+"
+" lua
+"
+if executable('sumneko-lua-langauage-server')
+    au User lsp_setup call lst#register_server({
+    \ })
+endif
 
 endif " s:_vim_lsp
 "
 " colorscheme
 "
 if has('gui_running')
+    source $VIMRUNTIME/mswin.vim
     set columns=120
     set lines=60
     set guifont=PlemolJP_Console_NF:h14

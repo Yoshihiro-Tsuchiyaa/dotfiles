@@ -53,4 +53,4 @@ foreach ($file in Get-ChildItem $destRoot -Filter *.exe) {
 
 }
 
-Write-Host "countHardlink_WinGet = $countHardlink_WinGet"
+Write-Host " Hardlink_WinGet: $countHardlink_WinGet"

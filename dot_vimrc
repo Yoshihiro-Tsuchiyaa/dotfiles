@@ -176,21 +176,8 @@ match DoubleByteSpace /　/
 "----------------------------------------
 
 "----------------------------------------
-let s:wt_theme = trim($WT_THEME)
-
-if s:wt_theme == "Dracula"
-    let s:_vim_colorscheme = "dracula"
-elseif s:wt_theme == "Iceberg"
-    let s:_vim_colorscheme = "iceberg"
-elseif s:wt_theme == "Tokyo Night"
-    let s:_vim_colorscheme = "tokyonight"
-elseif s:wt_theme == "Tokyo Night Storm"
-    let s:_vim_colorscheme = "tokyonight-storm"
-elseif s:wt_theme == "Tokyo Night Light"
-    let s:_vim_colorscheme = "tokyonight-light"
-else
-    let s:_vim_colorscheme = "iceberg"
-endif
+let s:_vim_colorscheme = trim($VIM_COLORSCHEME)
+let s:_lightline_colorscheme  = trim($LIGHTLINE_COLORSCHEME)
 
 " ----------------------------------------------------
 "  2. LSP & 補完用の基本キーマッピング（任意で変更してください）
@@ -213,11 +200,14 @@ augroup END
 call plug#begin()
     Plug 'pprovost/vim-ps1'
     Plug 'catppuccin/nvim', { 'as': 'captppuccin' }
-if s:_vim_colorscheme == "tokyonight"
+"@if s:_vim_colorscheme == "tokyonight"
     Plug 'ghifarit53/tokyonight-vim'
-elseif s:_vim_colorscheme == "dracula"
+"@endif
+"@if s:_vim_colorscheme == "dracula"
     Plug 'dracula/vim', { 'as' : 'dracula' }
-endif
+"@endif
+    Plug 'haishanh/night-owl.vim'
+
 if s:_vim_lightline
     Plug 'itchyny/lightline.vim'
 endif " s:_vim_lightline
@@ -322,14 +312,16 @@ endif
 "colorscheme tender
 
 set background=dark
-if s:_vim_colorscheme != ""
+if s:_vim_colorscheme != ''
     if s:_vim_colorscheme == "tokyonight"
         let g:tokyonight_style = 'night'   " available: night, storm
         let g:tokyonight_enable_italic = 1 " available: 0, 1
-        if s:_vim_lightline
-            let g:lightline = { 'colorscheme' : 'tokyonight' }
-        endif " s:_vim_lightline
     endif
-    execute "colorscheme " . s:_vim_colorscheme
+    execute 'colorscheme ' . s:_vim_colorscheme
+else
+    colorscheme torte
 endif
+if s:_vim_lightline && s:_lightline_colorscheme != ""
+    let g:lightline = { 'colorscheme' : s:_lightline_colorscheme }
+endif " s:_vim_lightline
 

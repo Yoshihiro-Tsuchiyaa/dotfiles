@@ -66,14 +66,53 @@ LogTime "処理開始"
 #@oh-my-posh init pwsh | Invoke-Expression
 #
 #
+fnm env --use-on-cd | Out-String | Invoke-Expression
+LogSuccess "fnm current $(fnm current)"
 #
 Import-Module lsd-aliases -DisableNameChecking
 # ==================================================
 # WT_THEME
 #
+function Set-ColorTheme {
+    param(
+        [string]$Theme = 'Tokyo Night'
+    )
+
+    $themes = @{
+        Dracula = @{
+            wezterm   = 'Dracula+'
+            vim       = 'dracula'
+            lightline = 'dracula'
+        }
+        Iceberg = @{
+            wezterm   = 'iceberg-dark'
+            vim       = 'iceberg'
+            lightline = 'iceberg'
+        }
+        'Tokyo Night' = @{
+            wezterm   = 'tokyonight_night'
+            vim       = 'tokyonight'
+            lightline = 'tokyonight'
+        }
+        'Night Owl' = @{
+            wezterm   = 'Night Owl'
+            vim       = 'night-owl'
+            lightline = 'nightowl'
+        }
+    }
+
+    $selected = $themes[$Theme]
+
+    $env:WT_THEME              = $selected.wezterm
+    $env:VIM_COLORSCHEME       = $selected.vim
+    $env:LIGHTLINE_COLORSCHEME = $selected.lightline
+}
+
 if ($env:TERMINAL_EMULATOR -eq 'WezTerm') {
     LogSuccess '[WezTerm] WezTerm deteced'
-    LogSuccess "[WezTerm] WT_THEME=$theme"
+    LogSuccess "[WezTerm] WT_THEME=$env:WT_THEME"
+    LogSuccess "[WezTerm] VIM_COLORSCHEME=$env:VIM_COLORSCHEME"
+    LogSuccess "[WezTerm] LIGHTLINE_COLORSCHEME=$env:LIGHTLINE_COLORSCHEME"
 } elseif ($env:WT_SESSION) {
     # Windows Terminal settings.json 読み取り
     $settingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
@@ -86,8 +125,11 @@ if ($env:TERMINAL_EMULATOR -eq 'WezTerm') {
     if (-not $theme) {
         $theme = $settings.profiles.defaults.colorScheme
     }
+    set-ColorTheme $theme
     $env:WT_THEME = $theme
     LogSuccess "[WT] WT_THEME=$theme"
+    LogSuccess "[WT] VIM_COLORSCHEME=$env:VIM_COLORSCHEME"
+    LogSuccess "[WT] LIGHTLINE_COLORSCHEME=$env:LIGHTLINE_COLORSCHEME"
 } else {
 }
 
@@ -165,4 +207,7 @@ if (Test-Path $clink) {
 } else {
     LogWarn "clink setup file not found: $clink"
 }
+
+$HOSTS = "C:\windows\system32\drivers\etc\hosts"
+$Wez = "$env:USERPROFILE\.config\WezTerm\WezTerm.lua"
 
